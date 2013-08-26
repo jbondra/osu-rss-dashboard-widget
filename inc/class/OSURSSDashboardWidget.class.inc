@@ -63,6 +63,26 @@ class OSURSSDashboardWidget {
 		
 		// Now we just add your widget back in.
 		$wp_meta_boxes['dashboard']['side']['core']['osu_rss_dashboard_widget'] = $my_widget;
+		
+		// move widget to top (http://codex.wordpress.org/Dashboard_Widgets_API#Advanced:_Forcing_your_widget_to_the_top)
+		
+		// Get the regular dashboard widgets array 
+		// (which has our new widget already but at the end)
+	
+		$normal_dashboard = $wp_meta_boxes['dashboard']['side']['core'];
+		
+		// Backup and delete our new dashboard widget from the end of the array
+	
+		$osu_rss_dashboard_widget_backup = array('osu_rss_dashboard_widget' => $normal_dashboard['osu_rss_dashboard_widget']);
+		unset($normal_dashboard['osu_rss_dashboard_widget']);
+	
+		// Merge the two arrays together so our widget is at the beginning
+	
+		$sorted_dashboard = array_merge($osu_rss_dashboard_widget_backup, $normal_dashboard);
+	
+		// Save the sorted array back into the original metaboxes 
+	
+		$wp_meta_boxes['dashboard']['side']['core'] = $sorted_dashboard;
 	}
 	
 	public function rss_dashboard_widget() {
