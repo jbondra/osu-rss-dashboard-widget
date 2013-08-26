@@ -51,26 +51,18 @@ class OSURSSDashboardWidget {
 		
 		// Globalize the metaboxes array, this holds all the widgets for wp-admin
 		
-		// move widget to top (http://codex.wordpress.org/Dashboard_Widgets_API#Advanced:_Forcing_your_widget_to_the_top)
+		// move widget to side (http://codex.wordpress.org/Dashboard_Widgets_API#Advanced:_Adding_Widgets_onto_the_side)
+		// Global the $wp_meta_boxes variable (this will allow us to alter the array).
 		global $wp_meta_boxes;
 		
-		// Get the regular dashboard widgets array 
-		// (which has our new widget already but at the end)
-	
-		$normal_dashboard = $wp_meta_boxes['dashboard']['normal']['core'];
+		// Then we make a backup of your widget.
+		$my_widget = $wp_meta_boxes['dashboard']['normal']['core']['osu_rss_dashboard_widget'];
 		
-		// Backup and delete our new dashboard widget from the end of the array
-	
-		$osu_rss_dashboard_widget_backup = array('osu_rss_dashboard_widget' => $normal_dashboard['osu_rss_dashboard_widget']);
-		unset($normal_dashboard['osu_rss_dashboard_widget']);
-	
-		// Merge the two arrays together so our widget is at the beginning
-	
-		$sorted_dashboard = array_merge($osu_rss_dashboard_widget_backup, $normal_dashboard);
-	
-		// Save the sorted array back into the original metaboxes 
-	
-		$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard;
+		// We then unset that part of the array.
+		unset($wp_meta_boxes['dashboard']['normal']['core']['osu_rss_dashboard_widget']);
+		
+		// Now we just add your widget back in.
+		$wp_meta_boxes['dashboard']['side']['core']['osu_rss_dashboard_widget'] = $my_widget;
 	}
 	
 	public function rss_dashboard_widget() {
